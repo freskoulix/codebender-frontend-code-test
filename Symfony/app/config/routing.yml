@@ -1,0 +1,4 @@
+codebender_arduino_editor:
+    resource: "@CodebenderArduinoEditorBundle/Resources/config/routing.yml"
+    prefix:   /
+
