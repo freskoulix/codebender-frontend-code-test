@@ -1,0 +1,59 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #131313;
+}
+
+#main-container {
+    min-width: 800px;
+    max-width: 800px;
+    margin: 20px auto 20px;
+    border-radius: 2%;
+    display: block;
+    text-align: center;
+    background: #e5e5e5;
+}
+
+#title {
+    height: 30px;
+    font-size: 20px;
+}
+
+#toolbar {
+    height: 50px;
+    padding-top: 10px;
+    text-align: left;
+}
+
+#autosave {
+    height: 34px;
+    margin-bottom: 0;
+    margin-left: 60px;
+    padding-top: 8px;
+    display: inline-block;
+}
+
+#cb_cf_boards {
+    height: 34px;
+}
+
+#editor {
+    height: 400px;
+    border: 1px ridge #131313;
+    position: relative;
+    text-align: left;
+    font-size: 14px;
+}
+
+#statusbar {
+    max-width: 768px;
+    min-height: 80px;
+    padding-top: 10px;
+    display: inline-block;
+}
+
+#status p {
+    word-wrap: break-word;
+}
