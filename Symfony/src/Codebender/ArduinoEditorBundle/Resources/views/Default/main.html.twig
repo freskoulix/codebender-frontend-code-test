@@ -3,7 +3,7 @@ $(function () {
 
     /* Editor object */
     var Editor = {};
-    Editor.searchFlag = false; // flag used to enable Google search
+    Editor.google_flag = false; // flag used to enable Google search
 
     /* Autosaving */
     Editor.changeFlag = false; // flag for changed content
@@ -13,7 +13,7 @@ $(function () {
     Editor.marker_id = null;
     Editor.marker_flag = false;
     Editor.last_row = null;
-    Editor.search_flag = false;
+    Editor.library_flag = false;
     Editor.library = null;
 
     // Auto save ajax call, sync editor's contents with user session
@@ -21,7 +21,7 @@ $(function () {
         var data = Editor.editor.getValue();
         var url = $('#editor-contents').data('action');
         $('#autosave').show();
-        var dfd = $.ajax({
+        var jqXHR = $.ajax({
             url: url,
             method: 'POST',
             data: {'data': data},
@@ -73,16 +73,17 @@ $(function () {
 
         $('#editor').on('keydown', function (e) {
             if (e.keyCode == 18) {
-                Editor.searchFlag = true;
+                Editor.google_flag = true;
             }
         })
         .on('keyup', function (e) {
             if (e.keyCode == 18) {
-                Editor.searchFlag = false;
+                Editor.google_flag = false;
             }
         })
         .on('click', function (e) {
-            if (Editor.searchFlag) {
+            // Google search for terms, with ALT key pressed
+            if (Editor.google_flag) {
                 var position = Editor.editor.getCursorPosition();
                 var token = Editor.editor.session.getTokenAt(position.row, position.column);
                 if (token) {
@@ -92,9 +93,26 @@ $(function () {
                         // Note: Chrome, needs window.open to be executed immediately,
                         //       after onClick event.
                         window.open('https://www.google.com/#q='+query, 'GoogleSearch');
-                        Editor.searchFlag = false;
+                        Editor.google_flag = false;
                     }
                 }
+            }
+
+            // Library search for #include directives
+            if (Editor.library_flag && Editor.library !== null) {
+                var jqXHR = $.ajax({
+                    url: '{{ path("library") }}',
+                    type: 'POST',
+                    data: {'library': Editor.library},
+                    dataType: 'json',
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.status) {
+                            window.open(data.url);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    },
+                });
             }
         });
 
@@ -117,7 +135,7 @@ $(function () {
 
                 var range = new Editor.Range(position.row, token_start, position.row, token_end);
 
-                if (Editor.last_row != position.row) {
+                if (Editor.last_row != position.row || !Editor.marker_flag) {
                     if (Editor.marker_id) {
                         Editor.editor.getSession().removeMarker(Editor.marker_id);
                     }
@@ -125,14 +143,9 @@ $(function () {
                     $('#editor').find('.ace_content').addClass('selected');
                     Editor.marker_flag = true;
                 }
-                else if (!Editor.marker_flag) {
-                    Editor.marker_id = Editor.editor.getSession().addMarker(range, 'selected-header', 'text');
-                    $('#editor').find('.ace_content').addClass('selected');
-                    Editor.marker_flag = true;
-                }
 
                 Editor.library = line.replace(/#include|\.h|<|>|"/g, '');
-                Editor.search_flag = true;
+                Editor.library_flag = true;
             }
             else {
                 if (Editor.marker_id !== null && Editor.marker_flag) {
@@ -141,30 +154,10 @@ $(function () {
                     Editor.marker_id = null;
                     Editor.marker_flag = false;
                 }
-                Editor.search_flag = false;
+                Editor.library_flag = false;
             }
         });
     }
-
-    $('#editor').on('click', function (e) {
-        if (Editor.search_flag &&
-            Editor.library !== null) {
-            var jqXHR = $.ajax({
-                url: '{{ path("library") }}',
-                type: 'POST',
-                data: {'library': Editor.library},
-                dataType: 'json',
-                success: function (data, textStatus, jqXHR) {
-                    if (data.status) {
-                        window.open(data.url);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log('Error: ', errorThrown);
-                },
-            });
-        }
-    });
 
     /* Compiler object */
     var Compiler = {};
