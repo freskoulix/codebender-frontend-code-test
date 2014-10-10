@@ -1,7 +1,11 @@
 parameters:
 #    codebender_arduino_editor.example.class: Codebender\ArduinoEditorBundle\Example
+    codebender_arduino_editor.libman_url: 'http://localhost/~tsiknas/libman/Symfony/web/app_dev.php/authKey/v1/fetch?library='
+    codebender_arduino_editor.library_url: 'https://codebender.cc/library/'
 
 services:
 #    codebender_arduino_editor.example:
 #        class: %codebender_arduino_editor.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    codebender_arduino_editor.handler:
+        class:        Codebender\ArduinoEditorBundle\Handler\DefaultHandler

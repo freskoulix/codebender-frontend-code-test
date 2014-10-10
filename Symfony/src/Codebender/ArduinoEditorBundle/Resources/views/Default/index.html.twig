@@ -39,6 +39,7 @@
             <div id="editor-container">
                 <textarea id="editor-contents" data-action="{{ path('update') }}" style="display: none;">{{ app.session.get('code') }}</textarea>
                 <div id="editor"></div>
+                <div id=""></div>
             </div>
 
             <!-- Editor's statusbar -->
@@ -54,9 +55,10 @@
             '@CodebenderArduinoEditorBundle/Resources/public/libs/bootstrap/js/bootstrap.min.js'
             '@CodebenderArduinoEditorBundle/Resources/public/libs/compilerflasher.min.js'
             '@CodebenderArduinoEditorBundle/Resources/public/libs/ace/*'
-            '@CodebenderArduinoEditorBundle/Resources/public/js/main.js'
         %}
             <script src="{{ asset_url }}" type="text/javascript" charset="utf-8"></script>
         {% endjavascripts %}
+
+        {% include "CodebenderArduinoEditorBundle:Default:main.html.twig" %}
     </body>
 </html>

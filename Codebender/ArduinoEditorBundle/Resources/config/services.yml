@@ -1,7 +1,0 @@
-parameters:
-#    codebender_arduino_editor.example.class: Codebender\ArduinoEditorBundle\Example
-
-services:
-#    codebender_arduino_editor.example:
-#        class: %codebender_arduino_editor.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

@@ -7,3 +7,7 @@ update:
     defaults: { _controller: CodebenderArduinoEditorBundle:Default:update }
     requirements:
         _method:  POST
+
+library:
+    path:     /library
+    defaults: { _controller: CodebenderArduinoEditorBundle:Default:library }

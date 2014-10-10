@@ -1,9 +1,0 @@
-codebender_arduino_editor_homepage:
-    path:     /
-    defaults: { _controller: CodebenderArduinoEditorBundle:Default:index }
-
-update:
-    path:     /update
-    defaults: { _controller: CodebenderArduinoEditorBundle:Default:update }
-    requirements:
-        _method:  POST
